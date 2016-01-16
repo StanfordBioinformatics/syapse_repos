@@ -6,8 +6,8 @@
 	},
 
 	"apiTokens": {
-		"prod": "33dac3643ced4474bf53be336a00def59216dd7d",
-		"dev" : "33dac3643ced4474bf53be336a00def59216dd7d",
+		"prod": "51358d4e85c999bd9fa6510aafafdab13710e8ae",
+		"dev" : "ee5837418649f33c94c35d7845e88fb7b9b11d9c",
 		"qc"  : "33dac3643ced4474bf53be336a00def59216dd7d"
 	},
 	
