@@ -1,0 +1,19 @@
+{
+	"modes": {
+		"dev"  : "dev",
+		"qc"   : "qc",
+		"prod" : "prod"
+	},
+
+	"apiTokens": {
+		"prod": "33dac3643ced4474bf53be336a00def59216dd7d",
+		"dev" : "33dac3643ced4474bf53be336a00def59216dd7d",
+		"qc"  : "33dac3643ced4474bf53be336a00def59216dd7d"
+	},
+	
+	"hostUrls": {
+		"prod": "scgpm.syapse.com",
+		"dev" : "scgpm-dev.syapse.com",
+		"qc"  : "scgpm-qc.syapse.com"
+	}
+}
