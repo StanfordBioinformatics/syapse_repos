@@ -72,6 +72,26 @@ class Utils(Syapse):
 		"""
 		Syapse.__init__(self,mode=mode)
 		self.conn = self.connect()
+		self.kb = self.conn.kb
+
+	def deleteSequencingResults(self,name,lane,barcode=None):
+		"""
+		Function :
+		Args     : name - The value of the 'name' property (shown as "Record Name" in the  GUI). 
+							 lane - (int) The lane number. 
+							 barcode - The barcode name as shown in Syapse in the Barcode Results table of a SequencingResults object.
+		Example  : deleteSequencingResults("150619_TENNISON_0369_AC7CM2ACXX",8,"1:ATCACG")
+		"""	
+		airs = self.kb.listAppIndividualRecords(kb_class_id="EncodeSequencingResults",name=name) 
+		#The above returns AppIndividualRecords
+		for i in airs:
+			ai = self.kb.retrieveAppIndividual(app_ind_id=i.app_ind_id)
+			if ai.lane.value() != lane: #and ai.barcode.value() == "2:CGATGT":
+				continue
+			if barcode:
+				if ai.barcode.value() != barcode:
+						continue
+			self.kb.deleteAppIndividual(ai.id)	
 
 	def getAppIndividual(self,app_ind_id=None,unique_id=None):
 		"""	
