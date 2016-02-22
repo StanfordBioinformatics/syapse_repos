@@ -76,7 +76,9 @@ class Utils(Syapse):
 
 	def deleteSequencingResults(self,name,lane,barcode=None):
 		"""
-		Function :
+		Function : Deletes SequencingResults objects that have the given name, lane, and optionally a particular barcode.
+							 This method was created because many duplicate SequencingResults records exist due to a bug that was
+							 in the sequence results upload script.
 		Args     : name - The value of the 'name' property (shown as "Record Name" in the  GUI). 
 							 lane - (int) The lane number. 
 							 barcode - The barcode name as shown in Syapse in the Barcode Results table of a SequencingResults object.
