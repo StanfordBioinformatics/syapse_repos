@@ -1,9 +1,5 @@
 {
-	"modes": {
-		"dev"  : "dev",
-		"qc"   : "qc",
-		"prod" : "prod"
-	},
+	"modes": [ "dev","qc","prod"],
 
 	"apiTokens": {
 		"prod": "51358d4e85c999bd9fa6510aafafdab13710e8ae",
