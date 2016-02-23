@@ -69,16 +69,6 @@ def getBarcodeFromSeqResObj(self,seq_result_uid):
 					"""
 	return query
 
-
-def getPlatformFromSeqResObj(self,seq_result_uid):
-
-	"""
-	Function : Fetches the platform attribute from a Syapse Sequencing Results object.
-	Args     : seq_result_uid - A Syapse Sequencing Result object UID.
-	"""
-	ai = self.getAppIndividual(unique_id=seq_result_uid)
-	return ai.sequencingPlatform.value()
-
 def getPlatformFromSeqReqObj(self,seq_req_uid):
 	"""
 	Function : Fetches the platform attribute from a Syapse Sequencing Request object.
