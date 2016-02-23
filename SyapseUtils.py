@@ -245,7 +245,7 @@ class Utils(Syapse):
 		Function : Fetches the platform attribute from a Syapse Sequencing Results object.
 		Args     : seq_result_uid - A Syapse Sequencing Result object UID.
 		"""
-		ai = self.getAppIndividual(self,unique_id=seq_result_uid)
+		ai = self.getAppIndividualByUniqueId(self,unique_id=seq_result_uid)
 		return ai.sequencingPlatform.value()
 	
 	def getPlatformFromSeqReqObj(self,seq_req_uid):
