@@ -52,15 +52,25 @@ class Utils(syapse.Syapse):
 		ai = self.getAppIndividual(unique_id=seq_result_uid)
 		return ai.sequencingPlatform.value()
 
-	def processSyapseBarcode(self,barcode):
+	def getPlatformFromSeqReqObj(self,seq_req_uid):
 		"""
-		Function : Barcodes in Syapse have a number and colon prefixing the barcode sequence, i.e. 3:ACTGAG. This function removes that prefix.
-		Args     : barcode - str.
-		Returns  : str.
+		Function : Fetches the platform attribute from a Syapse Sequencing Request object.
+		Args     : seq_result_uid - A Syapse Sequencing Request object UID.
 		"""
-		barcode = barcode.split(":")
-		if len(barcode) == 1:
-			barcode = barcode[0]
-		else:
-			barcode = barcode[1]
-		return barcode
+		
+		ai = self.getAppIndividual(self,unique_id=seq_req_uid)
+		return ai.sequencingPlatform.value()
+
+
+def processSyapseBarcode(barcode):
+	"""
+	Function : Barcodes in Syapse have a number and colon prefixing the barcode sequence, i.e. 3:ACTGAG. This function removes that prefix.
+	Args     : barcode - str.
+	Returns  : str.
+	"""
+	barcode = barcode.split(":")
+	if len(barcode) == 1:
+		barcode = barcode[0]
+	else:
+		barcode = barcode[1]
+	return barcode

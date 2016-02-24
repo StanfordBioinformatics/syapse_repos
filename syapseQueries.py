@@ -1,6 +1,6 @@
-	
+import syapse_scgpm	
 
-def getSeqRequestsWithoutSeqResultsQuery(self):
+def getSeqRequestsWithoutSeqResultsQuery():
 	"""
 	Function : Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of each request all have a Sequencing Result (SRes) object. Each
                result returned by the query will contain the SReq unique ID. Essentially, if any of the library objects reference on the sequencing request object don't have
@@ -21,7 +21,7 @@ def getSeqRequestsWithoutSeqResultsQuery(self):
 				"""
 	return query
 
-def getBarcodesOnSeqRequestQuery(self,seq_req_uid):
+def getBarcodesOnSeqRequestQuery(seq_req_uid):
 	"""
 	Function : Given a Sequencing Request object ID from Syapse, gives the query needed to fetch all Barcodes associated on that Sequencing Request.
 	Args     : seq_req_uid - str. A Sequencing Request object ID from Syapse.
@@ -54,7 +54,7 @@ def getBarcodesOnSeqRequestQuery(self,seq_req_uid):
 					"""
 	return query
 
-def getBarcodeFromSeqResObj(self,seq_result_uid):
+def getBarcodeFromSeqResObj(seq_result_uid):
 	"""
 	Function : Fetches the barcode from a Syapse SequencingResult object.
 	Args     : seq_result_uid - str. A Syapse SequencingResult UID.
@@ -69,16 +69,7 @@ def getBarcodeFromSeqResObj(self,seq_result_uid):
 					"""
 	return query
 
-def getPlatformFromSeqReqObj(self,seq_req_uid):
-	"""
-	Function : Fetches the platform attribute from a Syapse Sequencing Request object.
-	Args     : seq_result_uid - A Syapse Sequencing Request object UID.
-	"""
-	
-	ai = self.getAppIndividual(self,unique_id=seq_req_uid)
-	return ai.sequencingPlatform.value()
-
-def getSeqResultObjsFromSeqReqObj(self,app_ind_id):
+def getSeqResultObjsFromSeqReqObj(app_ind_id):
 	"""
 	Function :
 	"""
@@ -103,7 +94,7 @@ def getSeqResultObjsFromSeqReqObj(self,app_ind_id):
 				"""
 	return query
 
-def getScoringsWithStatus(self,scoringStatus):
+def getScoringsWithStatus(scoringStatus):
 	"""
 	Function : Find All ChIP Seq Scoring Objects with Scoring Status = "Awaiting Scoring". Once executed, the query will return the following fileds in the order given:
 										1) ChIP Seq Scoring-UID
@@ -124,7 +115,8 @@ def getScoringsWithStatus(self,scoringStatus):
 
 	kbclassName = "ScgpmFSnapScoring"
 	propertyName = "scoringStatus"
-	rangeValues = self.getPropertyEnumRangeFromKbClassId(kbclass_id=kbclassName,propertyName=propertyName)
+	syapse = syapse_scgpm.syapse.Syapse()
+	rangeValues = syapse.getPropertyEnumRangeFromKbClassId(kbclass_id=kbclassName,propertyName=propertyName)
 	if not scoringStatus in rangeValues:
 		raise ValueError("scoringStatus must be one of {rangeValues}.".format(rangeValues=rangeValues))
 	
@@ -160,15 +152,15 @@ def getScoringsWithStatus(self,scoringStatus):
 
 	return query
 
-def getScoringsReady(self):
-	return self.getScoringsWithStatus(scoringStatus="Start Scoring")
+def getScoringsReady():
+	return getScoringsWithStatus(scoringStatus="Start Scoring")
 
-def getScoringsInProgress(self):
-	return self.getScoringsWithStatus(scoringStatus="Processing Scoring Results")
+def getScoringsInProgress():
+	return getScoringsWithStatus(scoringStatus="Processing Scoring Results")
 
-def getScoringsCompleted(self):
-	return self.getScoringsWithStatus(scoringStatus="Scoring Completed")
+def getScoringsCompleted():
+	return getScoringsWithStatus(scoringStatus="Scoring Completed")
 
-def getScoringsFailed(self):
-	return self.getScoringsWithStatus(scoringStatus="Scoring Failed")
+def getScoringsFailed():
+	return getScoringsWithStatus(scoringStatus="Scoring Failed")
 
