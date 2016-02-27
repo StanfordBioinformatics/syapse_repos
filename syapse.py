@@ -118,6 +118,7 @@ class Syapse:
 		
 		triple = ai.triples(propertyName)
 		triple.set(value)
+		self.kb.saveAppIndividual(ai)
 
 	def getPropertyEnumRangeFromAppInd(self,propertyName,app_ind_id=None,unique_id=None):
 		"""
