@@ -94,7 +94,7 @@ def getSeqResultObjsFromSeqReqObj(app_ind_id):
 				"""
 	return query
 
-def getScoringsWithStatus(scoringStatus):
+def getScoringsWithStatus(scoringStatus,mode):
 	"""
 	Function : Find All ChIP Seq Scoring Objects with Scoring Status = "Awaiting Scoring". Once executed, the query will return the following fileds in the order given:
 										1) ChIP Seq Scoring-UID
@@ -110,12 +110,13 @@ def getScoringsWithStatus(scoringStatus):
 										11) Ctl. Barcode
 										12) Ctl. Library-UID
 	Args     : scoringStatus - One of the possible scoringStatus values of a ChipScoring object in Syapse.
+						 mode - A string indicating which Syapse Host to use. Must be one of elemensts given in syapse.Syapse.knownModes.
 	Returns  : str. being the query. 
 	"""
 
 	kbclassName = "ScgpmFSnapScoring"
 	propertyName = "scoringStatus"
-	syapse = syapse_scgpm.syapse.Syapse()
+	syapse = syapse_scgpm.syapse.Syapse(mode=mode)
 	rangeValues = syapse.getPropertyEnumRangeFromKbClassId(kbclass_id=kbclassName,propertyName=propertyName)
 	if not scoringStatus in rangeValues:
 		raise ValueError("scoringStatus must be one of {rangeValues}.".format(rangeValues=rangeValues))
@@ -152,15 +153,15 @@ def getScoringsWithStatus(scoringStatus):
 
 	return query
 
-def getScoringsReady():
-	return getScoringsWithStatus(scoringStatus="Start Scoring")
+def getScoringsReady(mode):
+	return getScoringsWithStatus(mode=mode,scoringStatus="Start Scoring")
 
-def getScoringsInProgress():
-	return getScoringsWithStatus(scoringStatus="Processing Scoring Results")
+def getScoringsInProgress(mode):
+	return getScoringsWithStatus(mode=mode,scoringStatus="Processing Scoring Results")
 
-def getScoringsCompleted():
-	return getScoringsWithStatus(scoringStatus="Scoring Completed")
+def getScoringsCompleted(mode):
+	return getScoringsWithStatus(mode=mode,scoringStatus="Scoring Completed")
 
-def getScoringsFailed():
-	return getScoringsWithStatus(scoringStatus="Scoring Failed")
+def getScoringsFailed(mode):
+	return getScoringsWithStatus(mode=mode,scoringStatus="Scoring Failed")
 
