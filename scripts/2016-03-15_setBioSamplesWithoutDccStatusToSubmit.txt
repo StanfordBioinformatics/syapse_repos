@@ -1,0 +1,348 @@
+Updating B-141 to Send to DCC.
+INFO:__main__:Updating B-141 to Send to DCC.
+Successfully updated status for B-141.
+INFO:__main__:Successfully updated status for B-141.
+Updating B-142 to Send to DCC.
+INFO:__main__:Updating B-142 to Send to DCC.
+Successfully updated status for B-142.
+INFO:__main__:Successfully updated status for B-142.
+Updating B-143 to Send to DCC.
+INFO:__main__:Updating B-143 to Send to DCC.
+Successfully updated status for B-143.
+INFO:__main__:Successfully updated status for B-143.
+Updating B-177 to Send to DCC.
+INFO:__main__:Updating B-177 to Send to DCC.
+Successfully updated status for B-177.
+INFO:__main__:Successfully updated status for B-177.
+Updating B-188 to Send to DCC.
+INFO:__main__:Updating B-188 to Send to DCC.
+Successfully updated status for B-188.
+INFO:__main__:Successfully updated status for B-188.
+Updating B-190 to Send to DCC.
+INFO:__main__:Updating B-190 to Send to DCC.
+Successfully updated status for B-190.
+INFO:__main__:Successfully updated status for B-190.
+Updating B-193 to Send to DCC.
+INFO:__main__:Updating B-193 to Send to DCC.
+Successfully updated status for B-193.
+INFO:__main__:Successfully updated status for B-193.
+Updating B-194 to Send to DCC.
+INFO:__main__:Updating B-194 to Send to DCC.
+Successfully updated status for B-194.
+INFO:__main__:Successfully updated status for B-194.
+Updating B-197 to Send to DCC.
+INFO:__main__:Updating B-197 to Send to DCC.
+Successfully updated status for B-197.
+INFO:__main__:Successfully updated status for B-197.
+Updating B-198 to Send to DCC.
+INFO:__main__:Updating B-198 to Send to DCC.
+Successfully updated status for B-198.
+INFO:__main__:Successfully updated status for B-198.
+Updating B-199 to Send to DCC.
+INFO:__main__:Updating B-199 to Send to DCC.
+Successfully updated status for B-199.
+INFO:__main__:Successfully updated status for B-199.
+Updating B-204 to Send to DCC.
+INFO:__main__:Updating B-204 to Send to DCC.
+Successfully updated status for B-204.
+INFO:__main__:Successfully updated status for B-204.
+Updating B-224 to Send to DCC.
+INFO:__main__:Updating B-224 to Send to DCC.
+Successfully updated status for B-224.
+INFO:__main__:Successfully updated status for B-224.
+Updating B-225 to Send to DCC.
+INFO:__main__:Updating B-225 to Send to DCC.
+Successfully updated status for B-225.
+INFO:__main__:Successfully updated status for B-225.
+Updating B-227 to Send to DCC.
+INFO:__main__:Updating B-227 to Send to DCC.
+Successfully updated status for B-227.
+INFO:__main__:Successfully updated status for B-227.
+Updating B-228 to Send to DCC.
+INFO:__main__:Updating B-228 to Send to DCC.
+Successfully updated status for B-228.
+INFO:__main__:Successfully updated status for B-228.
+Updating B-229 to Send to DCC.
+INFO:__main__:Updating B-229 to Send to DCC.
+Successfully updated status for B-229.
+INFO:__main__:Successfully updated status for B-229.
+Updating B-230 to Send to DCC.
+INFO:__main__:Updating B-230 to Send to DCC.
+Successfully updated status for B-230.
+INFO:__main__:Successfully updated status for B-230.
+Updating B-231 to Send to DCC.
+INFO:__main__:Updating B-231 to Send to DCC.
+Successfully updated status for B-231.
+INFO:__main__:Successfully updated status for B-231.
+Updating B-232 to Send to DCC.
+INFO:__main__:Updating B-232 to Send to DCC.
+Successfully updated status for B-232.
+INFO:__main__:Successfully updated status for B-232.
+Updating B-233 to Send to DCC.
+INFO:__main__:Updating B-233 to Send to DCC.
+Successfully updated status for B-233.
+INFO:__main__:Successfully updated status for B-233.
+Updating B-234 to Send to DCC.
+INFO:__main__:Updating B-234 to Send to DCC.
+Successfully updated status for B-234.
+INFO:__main__:Successfully updated status for B-234.
+Updating B-235 to Send to DCC.
+INFO:__main__:Updating B-235 to Send to DCC.
+Successfully updated status for B-235.
+INFO:__main__:Successfully updated status for B-235.
+Updating B-236 to Send to DCC.
+INFO:__main__:Updating B-236 to Send to DCC.
+Successfully updated status for B-236.
+INFO:__main__:Successfully updated status for B-236.
+Updating B-237 to Send to DCC.
+INFO:__main__:Updating B-237 to Send to DCC.
+Successfully updated status for B-237.
+INFO:__main__:Successfully updated status for B-237.
+Updating B-238 to Send to DCC.
+INFO:__main__:Updating B-238 to Send to DCC.
+Successfully updated status for B-238.
+INFO:__main__:Successfully updated status for B-238.
+Updating B-239 to Send to DCC.
+INFO:__main__:Updating B-239 to Send to DCC.
+Successfully updated status for B-239.
+INFO:__main__:Successfully updated status for B-239.
+Updating B-240 to Send to DCC.
+INFO:__main__:Updating B-240 to Send to DCC.
+Successfully updated status for B-240.
+INFO:__main__:Successfully updated status for B-240.
+Updating B-241 to Send to DCC.
+INFO:__main__:Updating B-241 to Send to DCC.
+Successfully updated status for B-241.
+INFO:__main__:Successfully updated status for B-241.
+Updating B-243 to Send to DCC.
+INFO:__main__:Updating B-243 to Send to DCC.
+Successfully updated status for B-243.
+INFO:__main__:Successfully updated status for B-243.
+Updating B-244 to Send to DCC.
+INFO:__main__:Updating B-244 to Send to DCC.
+Successfully updated status for B-244.
+INFO:__main__:Successfully updated status for B-244.
+Updating B-245 to Send to DCC.
+INFO:__main__:Updating B-245 to Send to DCC.
+Successfully updated status for B-245.
+INFO:__main__:Successfully updated status for B-245.
+Updating B-246 to Send to DCC.
+INFO:__main__:Updating B-246 to Send to DCC.
+Successfully updated status for B-246.
+INFO:__main__:Successfully updated status for B-246.
+Updating B-247 to Send to DCC.
+INFO:__main__:Updating B-247 to Send to DCC.
+Successfully updated status for B-247.
+INFO:__main__:Successfully updated status for B-247.
+Updating B-248 to Send to DCC.
+INFO:__main__:Updating B-248 to Send to DCC.
+Successfully updated status for B-248.
+INFO:__main__:Successfully updated status for B-248.
+Updating B-249 to Send to DCC.
+INFO:__main__:Updating B-249 to Send to DCC.
+Successfully updated status for B-249.
+INFO:__main__:Successfully updated status for B-249.
+Updating B-250 to Send to DCC.
+INFO:__main__:Updating B-250 to Send to DCC.
+Successfully updated status for B-250.
+INFO:__main__:Successfully updated status for B-250.
+Updating B-251 to Send to DCC.
+INFO:__main__:Updating B-251 to Send to DCC.
+Successfully updated status for B-251.
+INFO:__main__:Successfully updated status for B-251.
+Updating B-253 to Send to DCC.
+INFO:__main__:Updating B-253 to Send to DCC.
+Successfully updated status for B-253.
+INFO:__main__:Successfully updated status for B-253.
+Updating B-254 to Send to DCC.
+INFO:__main__:Updating B-254 to Send to DCC.
+Successfully updated status for B-254.
+INFO:__main__:Successfully updated status for B-254.
+Updating B-255 to Send to DCC.
+INFO:__main__:Updating B-255 to Send to DCC.
+Successfully updated status for B-255.
+INFO:__main__:Successfully updated status for B-255.
+Updating B-256 to Send to DCC.
+INFO:__main__:Updating B-256 to Send to DCC.
+Successfully updated status for B-256.
+INFO:__main__:Successfully updated status for B-256.
+Updating B-259 to Send to DCC.
+INFO:__main__:Updating B-259 to Send to DCC.
+Successfully updated status for B-259.
+INFO:__main__:Successfully updated status for B-259.
+Updating B-260 to Send to DCC.
+INFO:__main__:Updating B-260 to Send to DCC.
+Successfully updated status for B-260.
+INFO:__main__:Successfully updated status for B-260.
+Updating B-261 to Send to DCC.
+INFO:__main__:Updating B-261 to Send to DCC.
+Successfully updated status for B-261.
+INFO:__main__:Successfully updated status for B-261.
+Updating B-262 to Send to DCC.
+INFO:__main__:Updating B-262 to Send to DCC.
+Successfully updated status for B-262.
+INFO:__main__:Successfully updated status for B-262.
+Updating B-266 to Send to DCC.
+INFO:__main__:Updating B-266 to Send to DCC.
+Successfully updated status for B-266.
+INFO:__main__:Successfully updated status for B-266.
+Updating B-267 to Send to DCC.
+INFO:__main__:Updating B-267 to Send to DCC.
+Successfully updated status for B-267.
+INFO:__main__:Successfully updated status for B-267.
+Updating B-274 to Send to DCC.
+INFO:__main__:Updating B-274 to Send to DCC.
+Successfully updated status for B-274.
+INFO:__main__:Successfully updated status for B-274.
+Updating B-275 to Send to DCC.
+INFO:__main__:Updating B-275 to Send to DCC.
+Successfully updated status for B-275.
+INFO:__main__:Successfully updated status for B-275.
+Updating B-276 to Send to DCC.
+INFO:__main__:Updating B-276 to Send to DCC.
+Successfully updated status for B-276.
+INFO:__main__:Successfully updated status for B-276.
+Updating B-277 to Send to DCC.
+INFO:__main__:Updating B-277 to Send to DCC.
+Successfully updated status for B-277.
+INFO:__main__:Successfully updated status for B-277.
+Updating B-278 to Send to DCC.
+INFO:__main__:Updating B-278 to Send to DCC.
+Successfully updated status for B-278.
+INFO:__main__:Successfully updated status for B-278.
+Updating B-279 to Send to DCC.
+INFO:__main__:Updating B-279 to Send to DCC.
+Successfully updated status for B-279.
+INFO:__main__:Successfully updated status for B-279.
+Updating B-284 to Send to DCC.
+INFO:__main__:Updating B-284 to Send to DCC.
+Successfully updated status for B-284.
+INFO:__main__:Successfully updated status for B-284.
+Updating B-285 to Send to DCC.
+INFO:__main__:Updating B-285 to Send to DCC.
+Successfully updated status for B-285.
+INFO:__main__:Successfully updated status for B-285.
+Updating B-286 to Send to DCC.
+INFO:__main__:Updating B-286 to Send to DCC.
+Successfully updated status for B-286.
+INFO:__main__:Successfully updated status for B-286.
+Updating B-287 to Send to DCC.
+INFO:__main__:Updating B-287 to Send to DCC.
+Successfully updated status for B-287.
+INFO:__main__:Successfully updated status for B-287.
+Updating B-288 to Send to DCC.
+INFO:__main__:Updating B-288 to Send to DCC.
+Successfully updated status for B-288.
+INFO:__main__:Successfully updated status for B-288.
+Updating B-290 to Send to DCC.
+INFO:__main__:Updating B-290 to Send to DCC.
+Successfully updated status for B-290.
+INFO:__main__:Successfully updated status for B-290.
+Updating B-291 to Send to DCC.
+INFO:__main__:Updating B-291 to Send to DCC.
+Successfully updated status for B-291.
+INFO:__main__:Successfully updated status for B-291.
+Updating B-293 to Send to DCC.
+INFO:__main__:Updating B-293 to Send to DCC.
+Successfully updated status for B-293.
+INFO:__main__:Successfully updated status for B-293.
+Updating B-294 to Send to DCC.
+INFO:__main__:Updating B-294 to Send to DCC.
+Successfully updated status for B-294.
+INFO:__main__:Successfully updated status for B-294.
+Updating B-295 to Send to DCC.
+INFO:__main__:Updating B-295 to Send to DCC.
+Successfully updated status for B-295.
+INFO:__main__:Successfully updated status for B-295.
+Updating B-296 to Send to DCC.
+INFO:__main__:Updating B-296 to Send to DCC.
+Successfully updated status for B-296.
+INFO:__main__:Successfully updated status for B-296.
+Updating B-297 to Send to DCC.
+INFO:__main__:Updating B-297 to Send to DCC.
+Successfully updated status for B-297.
+INFO:__main__:Successfully updated status for B-297.
+Updating B-298 to Send to DCC.
+INFO:__main__:Updating B-298 to Send to DCC.
+Successfully updated status for B-298.
+INFO:__main__:Successfully updated status for B-298.
+Updating B-299 to Send to DCC.
+INFO:__main__:Updating B-299 to Send to DCC.
+Successfully updated status for B-299.
+INFO:__main__:Successfully updated status for B-299.
+Updating B-300 to Send to DCC.
+INFO:__main__:Updating B-300 to Send to DCC.
+Successfully updated status for B-300.
+INFO:__main__:Successfully updated status for B-300.
+Updating B-301 to Send to DCC.
+INFO:__main__:Updating B-301 to Send to DCC.
+Successfully updated status for B-301.
+INFO:__main__:Successfully updated status for B-301.
+Updating B-302 to Send to DCC.
+INFO:__main__:Updating B-302 to Send to DCC.
+Successfully updated status for B-302.
+INFO:__main__:Successfully updated status for B-302.
+Updating B-303 to Send to DCC.
+INFO:__main__:Updating B-303 to Send to DCC.
+Successfully updated status for B-303.
+INFO:__main__:Successfully updated status for B-303.
+Updating B-304 to Send to DCC.
+INFO:__main__:Updating B-304 to Send to DCC.
+Successfully updated status for B-304.
+INFO:__main__:Successfully updated status for B-304.
+Updating B-307 to Send to DCC.
+INFO:__main__:Updating B-307 to Send to DCC.
+Successfully updated status for B-307.
+INFO:__main__:Successfully updated status for B-307.
+Updating B-36 to Send to DCC.
+INFO:__main__:Updating B-36 to Send to DCC.
+Successfully updated status for B-36.
+INFO:__main__:Successfully updated status for B-36.
+Updating B-37 to Send to DCC.
+INFO:__main__:Updating B-37 to Send to DCC.
+Successfully updated status for B-37.
+INFO:__main__:Successfully updated status for B-37.
+Updating B-38 to Send to DCC.
+INFO:__main__:Updating B-38 to Send to DCC.
+Successfully updated status for B-38.
+INFO:__main__:Successfully updated status for B-38.
+Updating B-39 to Send to DCC.
+INFO:__main__:Updating B-39 to Send to DCC.
+Successfully updated status for B-39.
+INFO:__main__:Successfully updated status for B-39.
+Updating B-51 to Send to DCC.
+INFO:__main__:Updating B-51 to Send to DCC.
+Successfully updated status for B-51.
+INFO:__main__:Successfully updated status for B-51.
+Updating B-102 to Send to DCC.
+INFO:__main__:Updating B-102 to Send to DCC.
+Successfully updated status for B-102.
+INFO:__main__:Successfully updated status for B-102.
+Updating B-103 to Send to DCC.
+INFO:__main__:Updating B-103 to Send to DCC.
+Successfully updated status for B-103.
+INFO:__main__:Successfully updated status for B-103.
+Updating B-104 to Send to DCC.
+INFO:__main__:Updating B-104 to Send to DCC.
+Successfully updated status for B-104.
+INFO:__main__:Successfully updated status for B-104.
+Updating B-105 to Send to DCC.
+INFO:__main__:Updating B-105 to Send to DCC.
+Successfully updated status for B-105.
+INFO:__main__:Successfully updated status for B-105.
+Updating B-115 to Send to DCC.
+INFO:__main__:Updating B-115 to Send to DCC.
+Successfully updated status for B-115.
+INFO:__main__:Successfully updated status for B-115.
+Updating B-159 to Send to DCC.
+INFO:__main__:Updating B-159 to Send to DCC.
+Successfully updated status for B-159.
+INFO:__main__:Successfully updated status for B-159.
+Updating B-84 to Send to DCC.
+INFO:__main__:Updating B-84 to Send to DCC.
+Successfully updated status for B-84.
+INFO:__main__:Successfully updated status for B-84.
+Updating B-85 to Send to DCC.
+INFO:__main__:Updating B-85 to Send to DCC.
+Successfully updated status for B-85.
+INFO:__main__:Successfully updated status for B-85.

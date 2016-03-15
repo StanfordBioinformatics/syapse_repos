@@ -1,5 +1,22 @@
 import syapse_scgpm	
 
+def getBiosamplesWithoutDccStatusSet():
+	"""
+	Function : Queries all Biosamples of type biosample (and not ENTex biosamples, for example) that don't yet have a DCC Status field.
+             This is useful if one needs to set the DCC Status field to something like Send to DCC.
+	Returns  : str. The Syapse SyQL query.
+	"""
+	query = """
+		SELECT ?ScgpmBiosample_A.sys:uniqueId WHERE {
+			REQUIRE PATTERN ?ScgpmBiosample_A enc:Biosample {
+				NOT enc:hasDccField ?DccField_B .
+				PATTERN ?DccField_B enc:DccField {}
+    	}
+		}
+		LIMIT 2000
+		"""
+	return query
+
 def getSeqRequestsWithoutSeqResultsQuery():
 	"""
 	Function : Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of each request all have a Sequencing Result (SRes) object. Each
