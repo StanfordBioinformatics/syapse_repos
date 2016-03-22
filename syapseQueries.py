@@ -50,20 +50,21 @@ def atacSeq_getLibraryLinkOnSequencingResult(seq_req_suid, barcode):
 	Function :
 	Args     : seq_req_suid - 
 						 barcode      -
-	Returns : str. The Syapse SyQL query.
+	Returns  : str. The Syapse SyQL query.
+	Ex:      : atac_getLibraryLinkOnSequencingResult(seq_req_suid="SReq-937",barcode="16:TCCTGAGC")
 	"""
 
 	query = """
-		SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId ?AtacSeq_B.sys:name ?AtacSeq_B.sys:uniqueId WHERE {
-    	REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
-				sys:uniqueId """ + "'" + seq_req_suid + "' ." + """
-				enc:hasAtacSeq ?AtacSeq_B
-			}
-			PATTERN ?AtacSeq_B enc:AtacSeq {
-				enc:barcode """ + "'" + barcode + "'" + """
-			}
-		}
-		LIMIT 2000
+		SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId ?AtacSeq_C.sys:name ?AtacSeq_C.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+        sys:uniqueId """ + "'" + seq_req_suid + "'" + """ . 
+        enc:hasAtacSeq ?AtacSeq_C
+    }
+    PATTERN ?AtacSeq_C enc:AtacSeq {
+        enc:barcode """ + "'" + barcode + "'" + """
+    }
+}
+LIMIT 20
 	"""
 	return query
 
