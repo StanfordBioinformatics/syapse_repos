@@ -12,22 +12,27 @@ def getLibraryLinkOnSequencingResult(seq_req_suid, barcode):
 	library = None 
 	##Fix the 'sample run name' to remove the rcvd ##/##/####
 	seq_req_suid = seq_req_suid.split()[0]
-	query = "" 
-	query = "SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId  "
-	query += "?Library_B.sys:name ?Library_B.sys:uniqueId ?ScgpmDChIP_C.sys:name  "
-	query += "?ScgpmDChIP_C.sys:uniqueId ?BioSampleLink_D.enc:hasLibrary  "
-	query += "?BioSampleLink_D.enc:barcode WHERE { "
-	query += "REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest { "
-	query += "sys:uniqueId '" + str(seq_req_suid) + "' . "
-	query += "enc:hasLibrary ?Library_B . "
-	query += "PATTERN ?Library_B enc:Library { "
-	query += "REVERSE enc:ScgpmDChIP ?ScgpmDChIP_C } "
-	query += "PATTERN ?ScgpmDChIP_C enc:ScgpmDChIP { "
-	query += "enc:hasBioSampleLink ?BioSampleLink_D . "
-	query += "PATTERN ?BioSampleLink_D enc:BioSampleLink { "
-	query += "enc:hasLibrary ?Library_B . "
-	query += "enc:barcode '" + str(barcode) + "'"
-	query += " } } } LIMIT 2000"
+	query = """
+			SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId ?Library_B.sys:name ?Library_B.sys:uniqueId ?ScgpmDChIP_C.sys:name ?ScgpmDChIP_C.sys:uniqueId ?BioSampleLink_I.enc:barcode WHERE {
+			    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+			        sys:uniqueId """ + "'" + seq_req_suid + "'" + """ .
+			        enc:hasLibrary ?Library_B
+			    }
+			    PATTERN ?Library_B enc:Library {
+			        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_C
+			    }
+			    PATTERN ?ScgpmDChIP_C enc:ScgpmDChIP {
+			        enc:hasBioSampleLink ?BioSampleLink_I .
+			        PATTERN ?BioSampleLink_I enc:BioSampleLink {
+			            enc:hasLibrary ?Library_B .
+			            enc:barcode """ + "'" + barcode + "'" + """
+			        }
+			    }
+			}
+			LIMIT 200
+"""
+	return query
+
 	#[0] - SEQUENCING REQUEST: A   RECORD NAME 
 	#[1] - SEQUENCING REQUEST: A   UNIQUE ID 
 	#[2] - LIBRARY: B  RECORD NAME 
