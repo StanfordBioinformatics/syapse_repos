@@ -1,5 +1,67 @@
 import syapse_scgpm	
 
+
+def getLibraryLinkOnSequencingResult(seq_req_suid, barcode):
+	"""  
+	Function :  Retrieves the app_ind_id of the library that is linked to the seq_req_suid and has the given barcode.
+							Recall that a ChIP object typically has 6 ChIP experiments (see ChIP-1073 in Syapse for an example). This is a saved
+							query on Syapse, named getLibraryAndBarcodeAssociationsOnSeqRequest.
+	Args     : 
+	Returns  :  A Library app_ind_id name, or None if the libary could't be found.
+	"""
+	library = None 
+	##Fix the 'sample run name' to remove the rcvd ##/##/####
+	seq_req_suid = seq_req_suid.split()[0]
+	query = "" 
+	query = "SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId  "
+	query += "?Library_B.sys:name ?Library_B.sys:uniqueId ?ScgpmDChIP_C.sys:name  "
+	query += "?ScgpmDChIP_C.sys:uniqueId ?BioSampleLink_D.enc:hasLibrary  "
+	query += "?BioSampleLink_D.enc:barcode WHERE { "
+	query += "REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest { "
+	query += "sys:uniqueId '" + str(seq_req_suid) + "' . "
+	query += "enc:hasLibrary ?Library_B . "
+	query += "PATTERN ?Library_B enc:Library { "
+	query += "REVERSE enc:ScgpmDChIP ?ScgpmDChIP_C } "
+	query += "PATTERN ?ScgpmDChIP_C enc:ScgpmDChIP { "
+	query += "enc:hasBioSampleLink ?BioSampleLink_D . "
+	query += "PATTERN ?BioSampleLink_D enc:BioSampleLink { "
+	query += "enc:hasLibrary ?Library_B . "
+	query += "enc:barcode '" + str(barcode) + "'"
+	query += " } } } LIMIT 2000"
+	#[0] - SEQUENCING REQUEST: A   RECORD NAME 
+	#[1] - SEQUENCING REQUEST: A   UNIQUE ID 
+	#[2] - LIBRARY: B  RECORD NAME 
+	#[3] - LIBRARY: B  UNIQUE ID 
+	#[4] - CHIP: C   RECORD NAME 
+	#[5] - CHIP: C   UNIQUE ID 
+	#[6] - BIOSAMPLELINK: D  LIBRARY
+	#[7] - BIOSAMPLELINK: D  BARCODE
+
+	return query
+
+
+def atacSeq_getLibraryLinkOnSequencingResult(seq_req_suid, barcode):
+	"""
+	Function :
+	Args     : seq_req_suid - 
+						 barcode      -
+	Returns : str. The Syapse SyQL query.
+	"""
+
+	query = """
+		SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId ?AtacSeq_B.sys:name ?AtacSeq_B.sys:uniqueId WHERE {
+    	REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+				sys:uniqueId """ + "'" + seq_req_suid + "' ." + """
+				enc:hasAtacSeq ?AtacSeq_B
+			}
+			PATTERN ?AtacSeq_B enc:AtacSeq {
+				enc:barcode """ + "'" + barcode + "'" + """
+			}
+		}
+		LIMIT 2000
+	"""
+	return query
+
 def getBiosamplesWithoutDccStatusSet():
 	"""
 	Function : Queries all Biosamples of type biosample (and not ENTex biosamples, for example) that don't yet have a DCC Status field.
@@ -19,7 +81,7 @@ def getBiosamplesWithoutDccStatusSet():
 
 def getSeqRequestsWithoutSeqResultsQuery():
 	"""
-	Function : Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of each request all have a Sequencing Result (SRes) object. Each
+	Function : Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of the Library object type all have a Sequencing Result (SRes) object. Each
                result returned by the query will contain the SReq unique ID. Essentially, if any of the library objects reference on the sequencing request object don't have
                a SRes object, then the SReq object label will be included in this query's results.
 	Return   : str. The Syapse SyQL query.
@@ -33,6 +95,28 @@ def getSeqRequestsWithoutSeqResultsQuery():
 						PATTERN ?Library_B enc:Library {
 							NOT EXISTS REVERSE enc:EncodeSequencingResults
 						}
+				}
+				LIMIT 2000
+				"""
+	return query
+
+
+def getAtacSeqSeqRequestsWithoutSeqResultsQuery():
+	"""
+	Function : Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of the AtacSeq library object type all have a Sequencing Result (SRes) object. Each
+               result returned by the query will contain the SReq unique ID. Essentially, if any of the library objects reference on the sequencing request object don't have
+               a SRes object, then the SReq object label will be included in this query's results.
+	Return   : str. The Syapse SyQL query.
+	"""
+
+	query = """
+					SELECT ?SequencingRequest_A.sys:label WHERE {
+	    			REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+	        		enc:hasAtacSeq ?AtacSeq_C
+	    			}
+	    			PATTERN ?AtacSeq_C enc:AtacSeq {
+	        		NOT EXISTS REVERSE enc:EncodeSequencingResults
+	    			}
 				}
 				LIMIT 2000
 				"""
