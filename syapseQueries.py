@@ -1,13 +1,35 @@
 import syapse_scgpm	
 
+def getWesternBlotsToSubmit():
+	"""
+	Function : The corresponding saved query name on Syapse is called WB_AB_Char_SySQL. This query finds all Wester Blots 
+						 that have an antibody selection, secondary validation, and status of "Send to DCC".
+	Returns  : str. The Syapse SyQL query.
+	"""
+	query = """
+		syapse_wb_query = "SELECT ?ScgpmBWesternBlot_A.sys:uniqueId ?AntibodyTested_B.enc:rowNumWB ?ScgpmBAntibodySelection_C.sys:uniqueId ?ScgpmSecondaryAntibody_D.sys:uniqueId WHERE {
+  		REQUIRE PATTERN ?ScgpmBWesternBlot_A enc:ScgpmBWesternBlot {
+  			enc:hasAntibodyTested ?AntibodyTested_B .
+  			PATTERN ?AntibodyTested_B enc:AntibodyTested {
+  				enc:hasScgpmBAntibodySelection ?ScgpmBAntibodySelection_C .
+  				enc:hasSecondaryScgpmBAntibodySelection ?ScgpmSecondaryAntibody_D .
+  				enc:submittedToDcc 'Send to DCC
+				}
+			}
+  		PATTERN ?ScgpmBAntibodySelection_C enc:ScgpmBAntibodySelection {}
+  		PATTERN ?ScgpmSecondaryAntibody_D enc:ScgpmSecondaryAntibody {}
+		} 
+		LIMIT 20000
+		"""
+	return query
 
-def getLibraryLinkOnSequencingResult(seq_req_suid, barcode):
+def getLibraryLinkOnSequencingRequest(seq_req_suid, barcode):
 	"""  
 	Function :  Retrieves the app_ind_id of the library that is linked to the seq_req_suid and has the given barcode.
 							Recall that a ChIP object typically has 6 ChIP experiments (see ChIP-1073 in Syapse for an example). This is a saved
 							query on Syapse, named getLibraryAndBarcodeAssociationsOnSeqRequest.
 	Args     : 
-	Returns  :  A Library app_ind_id name, or None if the libary could't be found.
+	Returns  :  Returns  : str. The Syapse SyQL query.
 	"""
 	library = None 
 	##Fix the 'sample run name' to remove the rcvd ##/##/####
@@ -45,13 +67,13 @@ def getLibraryLinkOnSequencingResult(seq_req_suid, barcode):
 	return query
 
 
-def atacSeq_getLibraryLinkOnSequencingResult(seq_req_suid, barcode):
+def atacSeq_getLibraryLinkOnSequencingRequest(seq_req_suid, barcode):
 	"""
 	Function :
 	Args     : seq_req_suid - 
 						 barcode      -
 	Returns  : str. The Syapse SyQL query.
-	Ex:      : atac_getLibraryLinkOnSequencingResult(seq_req_suid="SReq-937",barcode="16:TCCTGAGC")
+	Ex:      : atac_getLibraryLinkOnSequencingRequest(seq_req_suid="SReq-937",barcode="16:TCCTGAGC")
 	"""
 
 	query = """
