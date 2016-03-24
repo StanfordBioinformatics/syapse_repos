@@ -7,7 +7,7 @@ def getWesternBlotsToSubmit():
 	Returns  : str. The Syapse SyQL query.
 	"""
 	query = """
-		syapse_wb_query = "SELECT ?ScgpmBWesternBlot_A.sys:uniqueId ?AntibodyTested_B.enc:rowNumWB ?ScgpmBAntibodySelection_C.sys:uniqueId ?ScgpmSecondaryAntibody_D.sys:uniqueId WHERE {
+		SELECT ?ScgpmBWesternBlot_A.sys:uniqueId ?AntibodyTested_B.enc:rowNumWB ?ScgpmBAntibodySelection_C.sys:uniqueId ?ScgpmSecondaryAntibody_D.sys:uniqueId WHERE {
   		REQUIRE PATTERN ?ScgpmBWesternBlot_A enc:ScgpmBWesternBlot {
   			enc:hasAntibodyTested ?AntibodyTested_B .
   			PATTERN ?AntibodyTested_B enc:AntibodyTested {
