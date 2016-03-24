@@ -8,12 +8,12 @@ def getWesternBlotsToSubmit():
 	"""
 	query = """
 		SELECT ?ScgpmBWesternBlot_A.sys:uniqueId ?AntibodyTested_B.enc:rowNumWB ?ScgpmBAntibodySelection_C.sys:uniqueId ?ScgpmSecondaryAntibody_D.sys:uniqueId WHERE {
-  		REQUIRE PATTERN ?ScgpmBWesternBlot_A enc:ScgpmBWesternBlot {
-  			enc:hasAntibodyTested ?AntibodyTested_B .
-  			PATTERN ?AntibodyTested_B enc:AntibodyTested {
-  				enc:hasScgpmBAntibodySelection ?ScgpmBAntibodySelection_C .
-  				enc:hasSecondaryScgpmBAntibodySelection ?ScgpmSecondaryAntibody_D .
-  				enc:submittedToDcc 'Send to DCC
+			REQUIRE PATTERN ?ScgpmBWesternBlot_A enc:ScgpmBWesternBlot {
+				enc:hasAntibodyTested ?AntibodyTested_B .
+				PATTERN ?AntibodyTested_B enc:AntibodyTested {
+					enc:hasScgpmBAntibodySelection ?ScgpmBAntibodySelection_C .
+					enc:hasSecondaryScgpmBAntibodySelection ?ScgpmSecondaryAntibody_D .
+					enc:submittedToDcc 'Send to DCC'
 				}
 			}
   		PATTERN ?ScgpmBAntibodySelection_C enc:ScgpmBAntibodySelection {}
