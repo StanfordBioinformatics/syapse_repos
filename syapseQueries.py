@@ -1,5 +1,33 @@
 import syapse_scgpm	
 
+def getLibrariesToSubmit():
+	"""
+	Function :
+	Returns : Each record had 3 fields: [library-uid,sres-uid,biosample-uid]
+	"""
+	query = """
+		SELECT ?Library_B.sys:uniqueId ?EncodeSequencingResults_D.sys:uniqueId ?ScgpmBiosample_E.sys:uniqueId WHERE {
+    	REQUIRE PATTERN ?ScgpmFSnapScoring_A enc:ScgpmFSnapScoring {
+        enc:hasDccField/enc:submittedToDcc 'Send to DCC' .
+        enc:hasExperimentToControl/enc:hasControlLibrary ?Library_B
+    	}
+    	PATTERN ?Library_B enc:Library {
+        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_C .
+        REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_D
+    	}
+    	PATTERN ?ScgpmDChIP_C enc:ScgpmDChIP {
+        enc:hasBioSampleLink/enc:hasLibrary ?Library_B .
+        enc:hasBioSampleLink/enc:hasBiosample ?ScgpmBiosample_E
+    	}
+    	PATTERN ?ScgpmBiosample_E enc:ScgpmBiosample {
+        REVERSE enc:Library ?Library_B
+    	}
+    	PATTERN ?EncodeSequencingResults_D enc:EncodeSequencingResults {}
+		}
+		LIMIT 2000
+		"""
+	return query
+
 def getWesternBlotsToSubmit():
 	"""
 	Function : The corresponding saved query name on Syapse is called WB_AB_Char_SySQL. This query finds all Wester Blots 
