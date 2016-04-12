@@ -1,30 +1,75 @@
 import syapse_scgpm	
 
-def getLibrariesToSubmit():
+def getSeqResFromSeqReq_library(sreq_id,lims_barcode):
 	"""
-	Function :
-	Returns : Each record had 3 fields: [library-uid,sres-uid,biosample-uid]
+	Function : Gets the sequencing result(s) for a particular sequencing request and barcode combination. 
+	Args     : sreq_id
+	Returns  : tuple. contains two items of the form [SequencingResult_uid,Library_uid].
 	"""
 	query = """
-		SELECT ?Library_B.sys:uniqueId ?EncodeSequencingResults_D.sys:uniqueId ?ScgpmBiosample_E.sys:uniqueId WHERE {
-    	REQUIRE PATTERN ?ScgpmFSnapScoring_A enc:ScgpmFSnapScoring {
-        enc:hasDccField/enc:submittedToDcc 'Send to DCC' .
-        enc:hasExperimentToControl/enc:hasControlLibrary ?Library_B
-    	}
-    	PATTERN ?Library_B enc:Library {
-        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_C .
-        REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_D
-    	}
-    	PATTERN ?ScgpmDChIP_C enc:ScgpmDChIP {
-        enc:hasBioSampleLink/enc:hasLibrary ?Library_B .
-        enc:hasBioSampleLink/enc:hasBiosample ?ScgpmBiosample_E
-    	}
-    	PATTERN ?ScgpmBiosample_E enc:ScgpmBiosample {
-        REVERSE enc:Library ?Library_B
-    	}
-    	PATTERN ?EncodeSequencingResults_D enc:EncodeSequencingResults {}
+		SELECT ?EncodeSequencingResults_C.sys:uniqueId ?Library_B.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+        sys:uniqueId """ + "'" + sreq_id + "'" + """ .
+        enc:hasLibrary ?Library_B
+    }
+    PATTERN ?Library_B enc:Library {
+        REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_C .
+        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_D
+    }
+    PATTERN ?EncodeSequencingResults_C enc:EncodeSequencingResults {}
+    PATTERN ?ScgpmDChIP_D enc:ScgpmDChIP {
+        enc:hasBioSampleLink ?BioSampleLink_E .
+        PATTERN ?BioSampleLink_E enc:BioSampleLink {
+            enc:hasLibrary ?Library_B .
+            enc:barcode """ + "'" + lims_barcode + "'" + """
+        }
+	    }
+	}
+	LIMIT 20
+	"""
+	return query
+
+
+def getSeqResFromSeqReq_atacSeq(sreq_id,lims_barcode):
+	"""
+	Function : Gets the sequencing result(s) for a particular sequencing request and barcode combination. 
+	Args     : sreq_id
+	Returns  : tuple. contains two items of the form [SequencingResult_uid,Library_uid].
+	"""
+	query = """
+		SELECT ?EncodeSequencingResults_D.sys:uniqueId ?AtacSeq_C.sys:uniqueId WHERE {
+    	REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+     	   sys:uniqueId """ + "'" + sreq_id + "'" + """ .
+     	   enc:hasAtacSeq ?AtacSeq_C
+   	 }
+   	 PATTERN ?AtacSeq_C enc:AtacSeq {
+   	     REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_D .
+   	     enc:barcode """ + "'" + lims_barcode + "'" + """
+   	 }
+   	 PATTERN ?EncodeSequencingResults_D enc:EncodeSequencingResults {}
+	}
+	LIMIT 20
+	"""
+	return query
+
+def getBiosampleUidFromLibrary(library_uid):
+
+	query = """
+		SELECT ?ScgpmBiosample_D.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?Library_A enc:Library {
+        sys:uniqueId """ + "'" + library_uid + "'" + """ .
+        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_B
+    }
+    PATTERN ?ScgpmDChIP_B enc:ScgpmDChIP {
+        enc:hasBioSampleLink ?BioSampleLink_C .
+        PATTERN ?BioSampleLink_C enc:BioSampleLink {
+            enc:hasLibrary ?Library_A .
+            enc:hasBiosample ?ScgpmBiosample_D
+        }
+    }
+    PATTERN ?ScgpmBiosample_D enc:ScgpmBiosample {}
 		}
-		LIMIT 2000
+		LIMIT 20
 		"""
 	return query
 
