@@ -1,5 +1,6 @@
 import syapse_scgpm	
 
+
 def getSeqResFromSeqReq_library(sreq_id,lims_barcode):
 	"""
 	Function : Gets the sequencing result(s) for a particular sequencing request and barcode combination. 
@@ -49,6 +50,23 @@ def getSeqResFromSeqReq_atacSeq(sreq_id,lims_barcode):
    	 PATTERN ?EncodeSequencingResults_D enc:EncodeSequencingResults {}
 	}
 	LIMIT 20
+	"""
+	return query
+
+
+def getBiosampleUidFromAtacSeqLibrary(library_uid):
+	"""
+	Function :
+	"""
+	query = """
+		SELECT ?BiosampleENTex_B.sys:uniqueId WHERE {
+ 	   REQUIRE PATTERN ?AtacSeq_A enc:AtacSeq {
+ 	       sys:uniqueId """ + "'" + library_uid + "'" + """ .
+ 	       enc:hasBiosampleENTex ?BiosampleENTex_B
+  	  }
+   	 PATTERN ?BiosampleENTex_B enc:BiosampleENTex {}
+		}
+		LIMIT 20
 	"""
 	return query
 
