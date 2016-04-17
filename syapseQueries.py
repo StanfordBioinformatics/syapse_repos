@@ -1,5 +1,52 @@
 import syapse_scgpm	
 
+
+def getSeqResForLibrary(library_uid):
+	query = """
+		SELECT ?EncodeSequencingResults_A.sys:uniqueId WHERE {
+   	 REQUIRE PATTERN ?EncodeSequencingResults_A enc:EncodeSequencingResults {
+   	     enc:hasLibrary ?Library_B
+   	 }
+   	 PATTERN ?Library_B enc:Library {
+   	     sys:uniqueId """ + "'" + library_uid + "'" + """
+   	 }
+	}
+	LIMIT 20
+	"""
+	return query
+
+def getSeqReqForLibrary(library_uid):
+	query = """
+		SELECT ?SequencingRequest_A.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+        enc:hasLibrary ?Library_B
+    }
+    PATTERN ?Library_B enc:Library {
+        sys:uniqueId """ + "'" + library_uid + """
+    }
+	}
+	LIMIT 20
+	"""
+	return query
+
+def getAntibodyUidFromLibrary(library_uid):
+	"""
+	Function : Gets the unique ID of the Antibody (ScgpmBAntibodySelection) on the Library object.
+	Args     : library_uid - The syapse unique ID for a Library or AtacSeq object.
+	Returns  : str. 
+	"""
+	query = """
+		SELECT ?ScgpmBAntibodySelection_B.sys:uniqueId WHERE {
+   	 REQUIRE PATTERN ?Library_A enc:Library {
+   	     sys:uniqueId """ + "'" + library_uid + "'" + """ .
+   	     enc:hasScgpmBAntibodySelection ?ScgpmBAntibodySelection_B
+   	 }
+   	 PATTERN ?ScgpmBAntibodySelection_B enc:ScgpmBAntibodySelection {}
+		}
+		LIMIT 20
+	"""
+	return query
+
 def getSeqResFromSeqReq_library(sreq_id,lims_barcode):
 	"""
 	Function : Gets the sequencing result(s) for a particular sequencing request and barcode combination. 
