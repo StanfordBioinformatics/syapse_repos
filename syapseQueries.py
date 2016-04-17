@@ -99,6 +99,23 @@ def getSeqResFromSeqReq_atacSeq(sreq_id,lims_barcode):
 	"""
 	return query
 
+
+def getBiosampleUidFromAtacSeqLibrary(library_uid):
+	"""
+	Function :
+	"""
+	query = """
+		SELECT ?BiosampleENTex_B.sys:uniqueId WHERE {
+ 	   REQUIRE PATTERN ?AtacSeq_A enc:AtacSeq {
+ 	       sys:uniqueId """ + "'" + library_uid + "'" + """ .
+ 	       enc:hasBiosampleENTex ?BiosampleENTex_B
+  	  }
+   	 PATTERN ?BiosampleENTex_B enc:BiosampleENTex {}
+		}
+		LIMIT 20
+	"""
+	return query
+
 def getBiosampleUidFromLibrary(library_uid):
 
 	query = """
