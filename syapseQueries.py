@@ -1,6 +1,79 @@
 import syapse_scgpm	
 
 
+def getEncffNumberOnLibrary(library_uid,forwardRead=True):
+	if forwardRead:
+		read = 1
+	else:
+		read = 2
+	query = """
+		SELECT ?dccfileinfo_C.enc:encffNumber WHERE {
+    REQUIRE PATTERN ?Library_A enc:Library {
+        sys:uniqueId """ + "'" + library_uid + "'" + """ .
+        enc:hasDcc_file_info ?dccfileinfo_C .
+        PATTERN ?dccfileinfo_C enc:dccfileinfo {
+            EXISTS enc:encffNumber  .
+            enc:hasPaired_end """ + "'" + read + "'" + """
+        }
+    }
+	}
+	LIMIT 20
+	"""
+	return query
+
+
+def getEncffNumberOnAtacSeq(atacseq_uid,forwardRead=True):
+	query = """
+		SELECT ?dccfileinfo_B.enc:encffNumber WHERE {
+    REQUIRE PATTERN ?AtacSeq_A enc:AtacSeq {
+        sys:uniqueId """ + "'" + atacseq_uid + "'" + """ .
+        enc:hasDcc_file_info ?dccfileinfo_B .
+        PATTERN ?dccfileinfo_B enc:dccfileinfo {
+            EXISTS enc:encffNumber  .
+            enc:hasPaired_end """ + "'" + read + "'" + """
+        }
+    }
+	}
+	LIMIT 20
+	"""
+	return query	
+
+def getLibraryWithDccUuid(dcc_uuid):
+	query = """
+		SELECT ?Library_A.sys:uniqueId WHERE {
+    	REQUIRE PATTERN ?Library_A enc:Library {
+        enc:dcc_library_uuid """ + "'" + dcc_uuid + "'" + """
+    }
+	}
+	LIMIT 20
+	"""
+	return query
+
+def getAtacSeqWithDccUuid(dcc_uuid):
+	query = """
+		SELECT ?AtacSeq_A.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?AtacSeq_A enc:AtacSeq {
+        enc:dcc_library_uuid """ + "'" + dcc_uuid + "'" + """
+    }
+	}
+	LIMIT 20
+	"""
+	return query
+
+def getChipWithLibrary(library_uid):
+	query = """
+		SELECT ?ScgpmDChIP_A.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?ScgpmDChIP_A enc:ScgpmDChIP {
+        enc:hasBioSampleLink/enc:hasLibrary ?Library_C
+    }
+    PATTERN ?Library_C enc:Library {
+        sys:uniqueId """ + "'" + library_uid + "'" + """
+ 	   }
+	}
+	LIMIT 20
+	"""
+	return query
+
 def getSeqResForLibrary(library_uid):
 	query = """
 		SELECT ?EncodeSequencingResults_A.sys:uniqueId WHERE {
@@ -10,6 +83,20 @@ def getSeqResForLibrary(library_uid):
    	 PATTERN ?Library_B enc:Library {
    	     sys:uniqueId """ + "'" + library_uid + "'" + """
    	 }
+	}
+	LIMIT 20
+	"""
+	return query
+
+
+def getSeqResForAtacSeq(atacseq_uid):
+	query = """
+		SELECT ?EncodeSequencingResults_B.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?AtacSeq_A enc:AtacSeq {
+        sys:uniqueId """ + "'" + atacseq_uid + "'" + """ .
+        REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_B
+    }
+    PATTERN ?EncodeSequencingResults_B enc:EncodeSequencingResults {}
 	}
 	LIMIT 20
 	"""
