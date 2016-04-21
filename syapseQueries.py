@@ -1,11 +1,29 @@
 import syapse_scgpm	
 
+def getControlLibraryForExpLibraryOnChipSs(library_uid):
+	query = """
+		SELECT ?Library_D.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?ScgpmFSnapScoring_A enc:ScgpmFSnapScoring {
+        enc:hasExperimentToControl ?ExperimentToControl_B .
+        PATTERN ?ExperimentToControl_B enc:ExperimentToControl {
+            enc:hasExperimentalLibrary ?Library_C .
+            enc:hasControlLibrary ?Library_D
+        }
+    }
+    PATTERN ?Library_C enc:Library {
+        sys:uniqueId """ + "'" + library_uid + "'" + """
+    }
+    PATTERN ?Library_D enc:Library {}
+	}
+	LIMIT 20
+	"""
+	return query
 
 def getEncffNumberOnLibrary(library_uid,forwardRead=True):
 	if forwardRead:
-		read = 1
+		read = "1"
 	else:
-		read = 2
+		read = "2"
 	query = """
 		SELECT ?dccfileinfo_C.enc:encffNumber WHERE {
     REQUIRE PATTERN ?Library_A enc:Library {
@@ -23,6 +41,11 @@ def getEncffNumberOnLibrary(library_uid,forwardRead=True):
 
 
 def getEncffNumberOnAtacSeq(atacseq_uid,forwardRead=True):
+	if forwardRead:
+		read = "1"
+	else:
+		read = "2"
+
 	query = """
 		SELECT ?dccfileinfo_B.enc:encffNumber WHERE {
     REQUIRE PATTERN ?AtacSeq_A enc:AtacSeq {
