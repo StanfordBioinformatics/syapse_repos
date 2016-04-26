@@ -472,7 +472,7 @@ def getSeqResultObjsFromSeqReqObj(app_ind_id):
 
 def getScoringsWithStatus(scoringStatus,mode):
 	"""
-	Function : Find All ChIP Seq Scoring Objects with Scoring Status = "Awaiting Scoring". Once executed, the query will return the following fileds in the order given:
+	Function : Find All ChIP Seq Scoring Objects with the scoring status provided. Once executed, the query will return the following fileds in the order given:
 										1) ChIP Seq Scoring-UID
 										2) Exp. Library-UID
 										3) Exp. SRes-UID
