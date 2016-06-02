@@ -29,6 +29,7 @@ class Syapse:
 	"""
 	Use this class to establish a connection to one of our Syapse hosts, which is identified by the provided mode argument (i.e. dev, qc, prod).
 	"""
+	#The API tokens in the conf file scc should be from the Syapse user named limsbot+1@syapse.com.
 	apiTokens = scc["apiTokens"]
 	knownModes = scc["modes"]
 
@@ -53,6 +54,8 @@ class Syapse:
 		Returns  : A 
 		"""
 		conn = syapse_client.SyapseConnection(host=self.host,token=self.token)
+		conn.current_project = conn.retrieveProject('s:project/29030')
+		
 		return conn
 
 	def getHostURL(self):
