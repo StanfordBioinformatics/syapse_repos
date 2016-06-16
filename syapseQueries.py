@@ -1,19 +1,23 @@
 import syapse_scgpm	
 
-def getControlLibraryForExpLibraryOnChipSs(library_uid):
+def getControlLibraryForExpLibraryOnChipSs(syapse_exp_id,library_uid):
+	"""
+	Query exists on Syapse with the same name.
+	"""
 	query = """
-		SELECT ?Library_D.sys:uniqueId WHERE {
+		SELECT ?Library_E.sys:uniqueId WHERE {
     REQUIRE PATTERN ?ScgpmFSnapScoring_A enc:ScgpmFSnapScoring {
-        enc:hasExperimentToControl ?ExperimentToControl_B .
-        PATTERN ?ExperimentToControl_B enc:ExperimentToControl {
-            enc:hasExperimentalLibrary ?Library_C .
-            enc:hasControlLibrary ?Library_D
+        sys:uniqueId """ +  "'" + syapse_exp_id + "'" + """ .
+        enc:hasExperimentToControl ?ExperimentToControl_C .
+        PATTERN ?ExperimentToControl_C enc:ExperimentToControl {
+            enc:hasExperimentalLibrary ?Library_D .
+            enc:hasControlLibrary ?Library_E
         }
     }
-    PATTERN ?Library_C enc:Library {
+    PATTERN ?Library_D enc:Library {
         sys:uniqueId """ + "'" + library_uid + "'" + """
     }
-    PATTERN ?Library_D enc:Library {}
+    PATTERN ?Library_E enc:Library {}
 	}
 	LIMIT 20
 	"""
