@@ -1,5 +1,31 @@
 import syapse_scgpm	
 
+
+def getSReqsWithoutSeqResults():
+	"""
+	Function : Queries all ChIPs that have a library with a barcode, and the library has a SequencingRequest but
+						 does not yet have a SequencingResult.
+						 This query returns a list of lists, where each sublist has the two elements [SReq-ID,barcode]. 
+	"""
+	query = """
+		SELECT ?SequencingRequest_D.sys:uniqueId ?BioSampleLink_B.enc:barcode WHERE {
+    REQUIRE PATTERN ?ScgpmDChIP_A enc:ScgpmDChIP {
+        enc:hasBioSampleLink ?BioSampleLink_B .
+        PATTERN ?BioSampleLink_B enc:BioSampleLink {
+            enc:hasLibrary ?Library_C .
+            EXISTS enc:barcode 
+        }
+    }
+    PATTERN ?Library_C enc:Library {
+        REVERSE enc:SequencingRequest ?SequencingRequest_D .
+        NOT EXISTS REVERSE enc:EncodeSequencingResults
+    }
+    PATTERN ?SequencingRequest_D enc:SequencingRequest {}
+		}
+		LIMIT 20
+	"""
+	return query
+
 def getControlLibraryForExpLibraryOnChipSs(syapse_exp_id,library_uid):
 	"""
 	Query exists on Syapse with the same name.
@@ -360,9 +386,11 @@ def getBiosamplesWithoutDccStatusSet():
 
 def getSeqRequestsWithoutSeqResultsQuery():
 	"""
-	Function : Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of the Library object type all have a Sequencing Result (SRes) object. Each
-               result returned by the query will contain the SReq unique ID. Essentially, if any of the library objects reference on the sequencing request object don't have
-               a SRes object, then the SReq object label will be included in this query's results.
+	Function : Now Obsolete. Use getSReqsWithoutSeqResults() instead for new scripts.
+						Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of the Library object type 
+						all have a Sequencing Result (SRes) object. Each result returned by the query will contain the SReq unique ID. 
+						Essentially, if any of the library objects reference on the sequencing request object don't have a SRes object, 
+						then the SReq object label will be included in this query's results.
 	Return   : str. The Syapse SyQL query.
 	"""
 
@@ -382,23 +410,23 @@ def getSeqRequestsWithoutSeqResultsQuery():
 
 def getAtacSeqSeqRequestsWithoutSeqResultsQuery():
 	"""
-	Function : Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of the AtacSeq library object type all have a Sequencing Result (SRes) object. Each
-               result returned by the query will contain the SReq unique ID. Essentially, if any of the library objects reference on the sequencing request object don't have
-               a SRes object, then the SReq object label will be included in this query's results.
-	Return   : str. The Syapse SyQL query.
+	Function : Queries all Sequencing Request (SReq) that have an AtacSeq library object with a barcode, but don't yet have a 
+						 Sequencing Result (SRes) object. This query returns a list of lists, where each sublist has the two elements
+						 [AtacSeq-ID,barcode].
 	"""
 
 	query = """
-					SELECT ?SequencingRequest_A.sys:label WHERE {
-	    			REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
-	        		enc:hasAtacSeq ?AtacSeq_C
-	    			}
-	    			PATTERN ?AtacSeq_C enc:AtacSeq {
-	        		NOT EXISTS REVERSE enc:EncodeSequencingResults
-	    			}
-				}
-				LIMIT 2000
-				"""
+		SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId ?AtacSeq_C.sys:name ?AtacSeq_C.sys:uniqueId ?AtacSeq_C.enc:barcode WHERE {
+    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+        enc:hasAtacSeq ?AtacSeq_C
+    }
+    PATTERN ?AtacSeq_C enc:AtacSeq {
+        NOT EXISTS REVERSE enc:EncodeSequencingResults .
+        EXISTS enc:barcode 
+    }
+	}
+	LIMIT 20
+	"""
 	return query
 
 def getBarcodesOnSeqRequestQuery(seq_req_uid):
