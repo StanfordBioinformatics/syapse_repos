@@ -11,6 +11,29 @@ class Utils(syapse.Syapse):
 		"""
 		syapse.Syapse.__init__(self,mode=mode)
 
+	def getSeqResFromSeqReq(self,sreq_id,lims_barcode):
+		"""
+		Function : Finds all SRes objects linked to the Library or AtacSeq object that was sequenced as part of sreq_id with the barcode specified by lims_barcode.
+		Args     : sreq_id - str. The SReq ID.
+						 	lims_barcode - str. The barcode (sample) in the sequencing request specified by sreq, which identifies the library to check for SeqRes objects.
+		Returns  : list of two-item lists where each sublist contains the unique ID of the SRes object and the unique ID of the Library or AtacSeq object.
+		"""
+		lib_seqres = self.kb.executeSyQLQuery(syapseQueries.getSeqResFromSeqReq_library(sreq_id=sreq_id,lims_barcode=lims_barcode)).rows
+		atac_seqres = self.kb.executeSyQLQuery(syapseQueries.getSeqResFromSeqReq_atacSeq(sreq_id=sreq_id,lims_barcode=lims_barcode)).rows
+		return lib_seqres + atac_seqres
+
+	def getSReqsWithoutSeqResults(self):
+		"""
+		Function : Queries Syapse for any Sequencing Request (SReq) objects that need to have their sequencing result metadata uploaded.
+							 If any of the library objects in Syapse that are linked on the SReq don't have a Sequencing Results (SRes) object reference, 
+							 then the ID of the SequencingRequest will be returned as part of a list of lists.
+		Returns  : A list of 1-item lists. Each sub list contains the ID of a Syapse SequencingRequest object. 
+		"""
+		libraryRes  = self.kb.executeSyQLQuery(syapseQueries.getLibSReqsWithoutSeqResults()).rows	
+		atacSeqLibraryRes = self.kb.executeSyQLQuery(syapseQueries.getAtacSReqsWithoutSeqResults()).rows
+		rows = libraryRes + atacSeqLibraryRes
+		return rows
+
 	def deleteSequencingResults(self,name,lane,barcode=None):
 		"""
 		Function : Deletes SequencingResults objects that have the given name, lane, and optionally a particular barcode.

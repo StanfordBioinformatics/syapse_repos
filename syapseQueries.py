@@ -1,28 +1,55 @@
 import syapse_scgpm	
+import encode.dcc_submit.typeMappings #module load gbsc/encode/prod
+import re
 
 
-def getSReqsWithoutSeqResults():
+def getChIPssWithTechnicalLibs(lib1,lib2):
 	"""
-	Function : Queries all ChIPs that have a library with a barcode, and the library has a SequencingRequest but
-						 does not yet have a SequencingResult.
-						 This query returns a list of lists, where each sublist has the two elements [SReq-ID,barcode]. 
+	Function : Finds the ChIPss ID that has the two technical replicates in question.
+	Args     : lib1,lib2 - The Syapse app ind ID of a Library object.
+	Returns  : str. The ChIPss ID.
 	"""
 	query = """
-		SELECT ?SequencingRequest_D.sys:uniqueId ?BioSampleLink_B.enc:barcode WHERE {
-    REQUIRE PATTERN ?ScgpmDChIP_A enc:ScgpmDChIP {
-        enc:hasBioSampleLink ?BioSampleLink_B .
-        PATTERN ?BioSampleLink_B enc:BioSampleLink {
-            enc:hasLibrary ?Library_C .
-            EXISTS enc:barcode 
-        }
+		SELECT ?ScgpmFSnapScoring_A.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?ScgpmFSnapScoring_A enc:ScgpmFSnapScoring {
+        enc:hasExperimentToControl/enc:hasExperimentalLibrary """ + "'" + lib1 + "'" + """ .
+        enc:hasExperimentToControl/enc:hasExperimentalLibrary """ + "'" + lib2 + "'" + """
     }
-    PATTERN ?Library_C enc:Library {
-        REVERSE enc:SequencingRequest ?SequencingRequest_D .
-        NOT EXISTS REVERSE enc:EncodeSequencingResults
+	}
+	LIMIT 20
+	"""
+	return query
+
+
+
+def formatBarcodeForSyapse(barcode):
+	"""
+	Function : Given a barcode, gives it the number and colon prefix as used in Syapse.
+	Example  : formatBarcodeForSyapse("TGACCA")
+						 -> 4:TGACCA
+	"""
+	if re.match(r'\d:',barcode):
+		return barcode
+	return encode.dcc_submit.typeMappings.barcode_map[barcode]
+
+def getLibraryForRunNameLaneBarcode(runName,lane,barcode):
+	"""
+	Function : Retrieves the UID of the Library in Syapse that has a SequencingResults where the run name, lane, and barcode matched the provided input.
+             Does not work for objects of kbclass AtacSeq as it only looks for libraries of kbclass Library.
+	"""
+	barcode = formatBarcodeForSyapse(barcode)
+	query = """
+		SELECT ?Library_A.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?Library_A enc:Library {
+        REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_B
     }
-    PATTERN ?SequencingRequest_D enc:SequencingRequest {}
-		}
-		LIMIT 20
+    PATTERN ?EncodeSequencingResults_B enc:EncodeSequencingResults {
+        enc:cell """ + "'" + runName + "'" + """ .
+        enc:lane """ + str(lane) + """ .
+        enc:barcode """ + "'" + barcode + "'" + """
+    }
+	}
+	LIMIT 200
 	"""
 	return query
 
@@ -189,51 +216,56 @@ def getAntibodyUidFromLibrary(library_uid):
 
 def getSeqResFromSeqReq_library(sreq_id,lims_barcode):
 	"""
-	Function : Gets the sequencing result(s) for a particular sequencing request and barcode combination. 
-	Args     : sreq_id
-	Returns  : tuple. contains two items of the form [SequencingResult_uid,Library_uid].
+	Function : Gets the sequencing result for a particular sequencing request and barcode combination. 
+	Args     : sreq_id - The SeqReq unique ID.
+						 lims_barcode - The barcode as given in Syapse, i.e. 1:ATCACG.
+	Returns  : list of SRes IDs. Should only have one. 
 	"""
 	query = """
-		SELECT ?EncodeSequencingResults_C.sys:uniqueId ?Library_B.sys:uniqueId WHERE {
+		SELECT ?EncodeSequencingResults_C.sys:uniqueId WHERE {
     REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
-        sys:uniqueId """ + "'" + sreq_id + "'" + """ .
+        sys:uniqueId """ + "'" + sreq_id + "'" +  """ .
         enc:hasLibrary ?Library_B
     }
     PATTERN ?Library_B enc:Library {
         REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_C .
         REVERSE enc:ScgpmDChIP ?ScgpmDChIP_D
     }
-    PATTERN ?EncodeSequencingResults_C enc:EncodeSequencingResults {}
+    PATTERN ?EncodeSequencingResults_C enc:EncodeSequencingResults {
+        enc:sample """ + "'" + sreq_id + "'" + """
+    }
     PATTERN ?ScgpmDChIP_D enc:ScgpmDChIP {
         enc:hasBioSampleLink ?BioSampleLink_E .
         PATTERN ?BioSampleLink_E enc:BioSampleLink {
             enc:hasLibrary ?Library_B .
             enc:barcode """ + "'" + lims_barcode + "'" + """
         }
-	    }
+    }
 	}
 	LIMIT 20
 	"""
 	return query
 
-
 def getSeqResFromSeqReq_atacSeq(sreq_id,lims_barcode):
 	"""
-	Function : Gets the sequencing result(s) for a particular sequencing request and barcode combination. 
-	Args     : sreq_id
-	Returns  : tuple. contains two items of the form [SequencingResult_uid,Library_uid].
+	Function : Gets the sequencing result for a particular sequencing request and barcode combination. 
+	Args     : sreq_id - The SeqReq unique ID.
+						 lims_barcode - The barcode as given in Syapse, i.e. 1:ATCACG.
+	Returns  : list of SRes IDs. Should only have one.
 	"""
 	query = """
-		SELECT ?EncodeSequencingResults_D.sys:uniqueId ?AtacSeq_C.sys:uniqueId WHERE {
-    	REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
-     	   sys:uniqueId """ + "'" + sreq_id + "'" + """ .
-     	   enc:hasAtacSeq ?AtacSeq_C
-   	 }
-   	 PATTERN ?AtacSeq_C enc:AtacSeq {
-   	     REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_D .
-   	     enc:barcode """ + "'" + lims_barcode + "'" + """
-   	 }
-   	 PATTERN ?EncodeSequencingResults_D enc:EncodeSequencingResults {}
+		SELECT ?EncodeSequencingResults_D.sys:uniqueId WHERE {
+    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+        sys:uniqueId """ + "'" + sreq_id + "'" + """ .
+        enc:hasAtacSeq ?AtacSeq_C
+    }
+    PATTERN ?AtacSeq_C enc:AtacSeq {
+        REVERSE enc:EncodeSequencingResults ?EncodeSequencingResults_D .
+        enc:barcode """ + "'" + lims_barcode + "'" + """
+    }
+    PATTERN ?EncodeSequencingResults_D enc:EncodeSequencingResults {
+        enc:sample """ + "'" + sample + "'" + """
+    }
 	}
 	LIMIT 20
 	"""
@@ -386,7 +418,7 @@ def getBiosamplesWithoutDccStatusSet():
 
 def getSeqRequestsWithoutSeqResultsQuery():
 	"""
-	Function : Now Obsolete. Use getSReqsWithoutSeqResults() instead for new scripts.
+	Function : Now Obsolete. Use getLibSReqsWithoutSeqResults() instead for new scripts.
 						Queries all Sequencing Request (SReq) objects to check whether the barcode libraries of the Library object type 
 						all have a Sequencing Result (SRes) object. Each result returned by the query will contain the SReq unique ID. 
 						Essentially, if any of the library objects reference on the sequencing request object don't have a SRes object, 
@@ -408,7 +440,33 @@ def getSeqRequestsWithoutSeqResultsQuery():
 	return query
 
 
-def getAtacSeqSeqRequestsWithoutSeqResultsQuery():
+def getLibSReqsWithoutSeqResults():
+	"""
+	Function : Queries all ChIPs that have a library with a barcode, and the library has a SequencingRequest but
+						 does not yet have a SequencingResult.
+						 This query returns a list of lists, where each sublist has the two elements [SReq-ID,barcode]. 
+	"""
+	query = """
+		SELECT ?SequencingRequest_D.sys:uniqueId ?BioSampleLink_B.enc:barcode WHERE {
+    REQUIRE PATTERN ?ScgpmDChIP_A enc:ScgpmDChIP {
+        enc:hasBioSampleLink ?BioSampleLink_B .
+        PATTERN ?BioSampleLink_B enc:BioSampleLink {
+            enc:hasLibrary ?Library_C .
+            EXISTS enc:barcode 
+        }
+    }
+    PATTERN ?Library_C enc:Library {
+        REVERSE enc:SequencingRequest ?SequencingRequest_D .
+        NOT EXISTS REVERSE enc:EncodeSequencingResults
+    }
+    PATTERN ?SequencingRequest_D enc:SequencingRequest {}
+		}
+		LIMIT 20
+	"""
+	return query
+
+
+def getAtacSReqsWithoutSeqResults():
 	"""
 	Function : Queries all Sequencing Request (SReq) that have an AtacSeq library object with a barcode, but don't yet have a 
 						 Sequencing Result (SRes) object. This query returns a list of lists, where each sublist has the two elements
@@ -475,31 +533,6 @@ def getBarcodeFromSeqResObj(seq_result_uid):
 					}
 					LIMIT 2000
 					"""
-	return query
-
-def getSeqResultObjsFromSeqReqObj(app_ind_id):
-	"""
-	Function :
-	"""
-	query = """
-				SELECT ?EncodeSequencingResults_A.sys:uniqueId ?Library_E.sys:uniqueId ?BioSampleLink_K.enc:barcode WHERE {
-				    REQUIRE PATTERN ?EncodeSequencingResults_A enc:EncodeSequencingResults {
-				        enc:hasLibrary ?Library_E
-				    }
-				    PATTERN ?Library_E enc:Library {
-				        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_F .
-				        REVERSE enc:SequencingRequest """ + app_ind_id + """
-				    }
-				    PATTERN ?ScgpmDChIP_F enc:ScgpmDChIP {
-				        enc:hasBioSampleLink ?BioSampleLink_K .
-				        PATTERN ?BioSampleLink_K enc:BioSampleLink {
-				            EXISTS enc:barcode  .
-				            enc:hasLibrary ?Library_E
-				        }
-				    }
-				}
-				LIMIT 2000
-				"""
 	return query
 
 def getScoringsWithStatus(scoringStatus,mode):

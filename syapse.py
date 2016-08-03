@@ -6,7 +6,7 @@
 ###
 
 import json
-import syapse_client
+import syapse_client #http://www.syapse.com/python_packages/docs/latest/
 import sys
 import os
 
