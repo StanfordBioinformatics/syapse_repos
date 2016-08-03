@@ -219,7 +219,7 @@ def getSeqResFromSeqReq_library(sreq_id,lims_barcode):
 	Function : Gets the sequencing result for a particular sequencing request and barcode combination. 
 	Args     : sreq_id - The SeqReq unique ID.
 						 lims_barcode - The barcode as given in Syapse, i.e. 1:ATCACG.
-	Returns  : list of SRes IDs. Should only have one. 
+	Returns  : list of lists, where each sublist contains a SRes-ID. There should only be one such sublist.
 	"""
 	query = """
 		SELECT ?EncodeSequencingResults_C.sys:uniqueId WHERE {
@@ -251,7 +251,7 @@ def getSeqResFromSeqReq_atacSeq(sreq_id,lims_barcode):
 	Function : Gets the sequencing result for a particular sequencing request and barcode combination. 
 	Args     : sreq_id - The SeqReq unique ID.
 						 lims_barcode - The barcode as given in Syapse, i.e. 1:ATCACG.
-	Returns  : list of SRes IDs. Should only have one.
+	Returns  : list of lists, where each sublist contains a SRes-ID. There should only be one such sublist.
 	"""
 	query = """
 		SELECT ?EncodeSequencingResults_D.sys:uniqueId WHERE {
@@ -264,7 +264,7 @@ def getSeqResFromSeqReq_atacSeq(sreq_id,lims_barcode):
         enc:barcode """ + "'" + lims_barcode + "'" + """
     }
     PATTERN ?EncodeSequencingResults_D enc:EncodeSequencingResults {
-        enc:sample """ + "'" + sample + "'" + """
+        enc:sample """ + "'" + sreq_id + "'" + """
     }
 	}
 	LIMIT 20

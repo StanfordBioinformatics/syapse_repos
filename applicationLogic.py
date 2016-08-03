@@ -16,11 +16,12 @@ class Utils(syapse.Syapse):
 		Function : Finds all SRes objects linked to the Library or AtacSeq object that was sequenced as part of sreq_id with the barcode specified by lims_barcode.
 		Args     : sreq_id - str. The SReq ID.
 						 	lims_barcode - str. The barcode (sample) in the sequencing request specified by sreq, which identifies the library to check for SeqRes objects.
-		Returns  : list of two-item lists where each sublist contains the unique ID of the SRes object and the unique ID of the Library or AtacSeq object.
+		Returns  : list of lists, where each sublist contains a SRes-ID. There should only be one such sublist.
 		"""
 		lib_seqres = self.kb.executeSyQLQuery(syapseQueries.getSeqResFromSeqReq_library(sreq_id=sreq_id,lims_barcode=lims_barcode)).rows
 		atac_seqres = self.kb.executeSyQLQuery(syapseQueries.getSeqResFromSeqReq_atacSeq(sreq_id=sreq_id,lims_barcode=lims_barcode)).rows
-		return lib_seqres + atac_seqres
+		res = [x[0] for x in lib_seqres + atac_seqres]
+		return res
 
 	def getSReqsWithoutSeqResults(self):
 		"""
