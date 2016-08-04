@@ -332,9 +332,9 @@ def getWesternBlotsToSubmit():
 		"""
 	return query
 
-def getLibraryLinkOnSequencingRequest(seq_req_suid, barcode):
+def getLibraryLinkOnSequencingRequest(sreq_id,lims_barcode):
 	"""  
-	Function :  Retrieves the app_ind_id of the library that is linked to the seq_req_suid and has the given barcode.
+	Function :  Retrieves the app_ind_id of the library that is linked to the sreq_id and has the given barcode.
 							Recall that a ChIP object typically has 6 ChIP experiments (see ChIP-1073 in Syapse for an example). This is a saved
 							query on Syapse, named getLibraryAndBarcodeAssociationsOnSeqRequest.
 	Args     : 
@@ -342,53 +342,41 @@ def getLibraryLinkOnSequencingRequest(seq_req_suid, barcode):
 	"""
 	library = None 
 	##Fix the 'sample run name' to remove the rcvd ##/##/####
-	seq_req_suid = seq_req_suid.split()[0]
+	sreq_id = sreq_id.split()[0]
 	query = """
-			SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId ?Library_B.sys:name ?Library_B.sys:uniqueId ?ScgpmDChIP_C.sys:name ?ScgpmDChIP_C.sys:uniqueId ?BioSampleLink_I.enc:barcode WHERE {
-			    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
-			        sys:uniqueId """ + "'" + seq_req_suid + "'" + """ .
-			        enc:hasLibrary ?Library_B
-			    }
-			    PATTERN ?Library_B enc:Library {
-			        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_C
-			    }
-			    PATTERN ?ScgpmDChIP_C enc:ScgpmDChIP {
-			        enc:hasBioSampleLink ?BioSampleLink_I .
-			        PATTERN ?BioSampleLink_I enc:BioSampleLink {
-			            enc:hasLibrary ?Library_B .
-			            enc:barcode """ + "'" + barcode + "'" + """
-			        }
-			    }
-			}
-			LIMIT 200
-"""
+		SELECT ?Library_B.sys:uniqueId WHERE {
+		  REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+		      sys:uniqueId """ + "'" + sreq_id + "'" + """ .
+		        enc:hasLibrary ?Library_B
+		    }
+		    PATTERN ?Library_B enc:Library {
+		        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_C
+		    }
+		    PATTERN ?ScgpmDChIP_C enc:ScgpmDChIP {
+		        enc:hasBioSampleLink ?BioSampleLink_I .
+		        PATTERN ?BioSampleLink_I enc:BioSampleLink {
+		            enc:hasLibrary ?Library_B .
+		            enc:barcode """ + "'" + lims_barcode + "'" + """
+		        }
+		    }
+		}
+		LIMIT 200
+	"""
 	return query
 
-	#[0] - SEQUENCING REQUEST: A   RECORD NAME 
-	#[1] - SEQUENCING REQUEST: A   UNIQUE ID 
-	#[2] - LIBRARY: B  RECORD NAME 
-	#[3] - LIBRARY: B  UNIQUE ID 
-	#[4] - CHIP: C   RECORD NAME 
-	#[5] - CHIP: C   UNIQUE ID 
-	#[6] - BIOSAMPLELINK: D  LIBRARY
-	#[7] - BIOSAMPLELINK: D  BARCODE
-
-	return query
-
-
-def atacSeq_getLibraryLinkOnSequencingRequest(seq_req_suid, barcode):
+def getAtacSeqLinkOnSequencingRequest(sreq_id, barcode):
 	"""
 	Function :
-	Args     : seq_req_suid - 
+	Args     : sreq_id - 
 						 barcode      -
 	Returns  : str. The Syapse SyQL query.
-	Ex:      : atac_getLibraryLinkOnSequencingRequest(seq_req_suid="SReq-937",barcode="16:TCCTGAGC")
+	Ex:      : getAtacLinkOnSequencingRequest(sreq_id="SReq-937",barcode="16:TCCTGAGC")
 	"""
 
 	query = """
-		SELECT ?SequencingRequest_A.sys:name ?SequencingRequest_A.sys:uniqueId ?AtacSeq_C.sys:name ?AtacSeq_C.sys:uniqueId WHERE {
+		SELECT ?AtacSeq_C.sys:uniqueId WHERE {
     REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
-        sys:uniqueId """ + "'" + seq_req_suid + "'" + """ . 
+        sys:uniqueId """ + "'" + sreq_id + "'" + """ . 
         enc:hasAtacSeq ?AtacSeq_C
     }
     PATTERN ?AtacSeq_C enc:AtacSeq {

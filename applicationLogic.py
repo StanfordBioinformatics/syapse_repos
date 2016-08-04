@@ -11,6 +11,22 @@ class Utils(syapse.Syapse):
 		"""
 		syapse.Syapse.__init__(self,mode=mode)
 
+	def getLibOrAtacSeqLinkOnSequencingRequest(self,sreq_id,lims_barcode):
+		"""
+		Function :
+		Args     :
+		Returns  : str.
+		"""
+		rows = self.kb.executeSyQLQuery(syapseQueries.getLibraryLinkOnSequencingRequest(sreq_id=sreq_id,lims_barcode=lims_barcode)).rows
+		if rows:
+			return rows[0][0]
+
+		rows = self.kb.executeSyQLQuery(syapseQueries.getAtacSeqLinkOnSequencingRequest(sreq_id=sreq_id,lims_barcode=lims_barcode)).rows
+		if not rows:
+			return None
+		return rows[0][0]
+		
+
 	def getSeqResFromSeqReq(self,sreq_id,lims_barcode):
 		"""
 		Function : Finds all SRes objects linked to the Library or AtacSeq object that was sequenced as part of sreq_id with the barcode specified by lims_barcode.
