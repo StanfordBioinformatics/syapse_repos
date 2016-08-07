@@ -449,7 +449,7 @@ def getLibSReqsWithoutSeqResults():
     }
     PATTERN ?SequencingRequest_D enc:SequencingRequest {}
 		}
-		LIMIT 20
+		LIMIT 200
 	"""
 	return query
 
@@ -471,7 +471,7 @@ def getAtacSReqsWithoutSeqResults():
         EXISTS enc:barcode 
     }
 	}
-	LIMIT 20
+	LIMIT 200
 	"""
 	return query
 
