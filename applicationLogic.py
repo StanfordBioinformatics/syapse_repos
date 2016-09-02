@@ -4,6 +4,9 @@ from . import syapse
 class MissingBarcodeException(Exception):
 	pass
 
+class MultipleLibrariesWithSameBarcodeOnSReq(Exception):
+	pass
+
 class Utils(syapse.Syapse):
 	def __init__(self,mode):
 		"""
@@ -18,6 +21,9 @@ class Utils(syapse.Syapse):
 		Returns  : str.
 		"""
 		rows = self.kb.executeSyQLQuery(syapseQueries.getLibraryLinkOnSequencingRequest(sreq_id=sreq_id,lims_barcode=lims_barcode)).rows
+		if len(rows) > 1:
+			libs = [x[0] for x in rows]
+			raise MultipleLibrariesWithSameBarcodeOnSReq("Sequencing Request {sreq_id} has multiple libraries: {libs} with the same barcode {barcode}".format(sreq_id=sreq_id,libs=libs,barcode=lims_barcode))
 		if rows:
 			return rows[0][0]
 
