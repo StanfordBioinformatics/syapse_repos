@@ -16,7 +16,7 @@ def getChIPssWithTechnicalLibs(lib1,lib2):
         enc:hasExperimentToControl/enc:hasExperimentalLibrary """ + "'" + lib2 + "'" + """
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -49,7 +49,7 @@ def getLibraryForRunNameLaneBarcode(runName,lane,barcode):
         enc:barcode """ + "'" + barcode + "'" + """
     }
 	}
-	LIMIT 200
+	LIMIT 2000
 	"""
 	return query
 
@@ -72,7 +72,7 @@ def getControlLibraryForExpLibraryOnChipSs(syapse_exp_id,library_uid):
     }
     PATTERN ?Library_E enc:Library {}
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -92,7 +92,7 @@ def getEncffNumberOnLibrary(library_uid,forwardRead=True):
         }
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -114,7 +114,7 @@ def getEncffNumberOnAtacSeq(atacseq_uid,forwardRead=True):
         }
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query	
 
@@ -125,7 +125,7 @@ def getLibraryWithDccUuid(dcc_uuid):
         enc:dcc_library_uuid """ + "'" + dcc_uuid + "'" + """
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -136,7 +136,7 @@ def getAtacSeqWithDccUuid(dcc_uuid):
         enc:dcc_library_uuid """ + "'" + dcc_uuid + "'" + """
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -150,7 +150,7 @@ def getChipWithLibrary(library_uid):
         sys:uniqueId """ + "'" + library_uid + "'" + """
  	   }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -164,7 +164,7 @@ def getSeqResForLibrary(library_uid):
    	     sys:uniqueId """ + "'" + library_uid + "'" + """
    	 }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -178,7 +178,7 @@ def getSeqResForAtacSeq(atacseq_uid):
     }
     PATTERN ?EncodeSequencingResults_B enc:EncodeSequencingResults {}
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -192,7 +192,7 @@ def getSeqReqForLibrary(library_uid):
         sys:uniqueId """ + "'" + library_uid + """
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -210,7 +210,7 @@ def getAntibodyUidFromLibrary(library_uid):
    	 }
    	 PATTERN ?ScgpmBAntibodySelection_B enc:ScgpmBAntibodySelection {}
 		}
-		LIMIT 20
+		LIMIT 2000
 	"""
 	return query
 
@@ -242,7 +242,7 @@ def getSeqResFromSeqReq_library(sreq_id,lims_barcode):
         }
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -267,7 +267,7 @@ def getSeqResFromSeqReq_atacSeq(sreq_id,lims_barcode):
         enc:sample """ + "'" + sreq_id + "'" + """
     }
 	}
-	LIMIT 20
+	LIMIT 2000
 	"""
 	return query
 
@@ -284,7 +284,7 @@ def getBiosampleUidFromAtacSeqLibrary(library_uid):
   	  }
    	 PATTERN ?BiosampleENTex_B enc:BiosampleENTex {}
 		}
-		LIMIT 20
+		LIMIT 2000
 	"""
 	return query
 
@@ -305,7 +305,7 @@ def getBiosampleUidFromLibrary(library_uid):
     }
     PATTERN ?ScgpmBiosample_D enc:ScgpmBiosample {}
 		}
-		LIMIT 20
+		LIMIT 2000
 		"""
 	return query
 
@@ -360,15 +360,15 @@ def getLibraryLinkOnSequencingRequest(sreq_id,lims_barcode):
 		        }
 		    }
 		}
-		LIMIT 200
+		LIMIT 20000
 	"""
 	return query
 
-def getAtacSeqLinkOnSequencingRequest(sreq_id, barcode):
+def getAtacSeqLinkOnSequencingRequest(sreq_id, lims_barcode):
 	"""
 	Function :
 	Args     : sreq_id - 
-						 barcode      -
+						 barcode -
 	Returns  : str. The Syapse SyQL query.
 	Ex:      : getAtacLinkOnSequencingRequest(sreq_id="SReq-937",barcode="16:TCCTGAGC")
 	"""
@@ -380,10 +380,10 @@ def getAtacSeqLinkOnSequencingRequest(sreq_id, barcode):
         enc:hasAtacSeq ?AtacSeq_C
     }
     PATTERN ?AtacSeq_C enc:AtacSeq {
-        enc:barcode """ + "'" + barcode + "'" + """
+        enc:barcode """ + "'" + lims_barcode + "'" + """
     }
-}
-LIMIT 20
+	}
+	LIMIT 2000
 	"""
 	return query
 
@@ -475,10 +475,37 @@ def getAtacSReqsWithoutSeqResults():
 	"""
 	return query
 
-def getBarcodesOnSeqRequestQuery(seq_req_uid):
+def getAtacSeqBarcodesOnSeqRequestQuery(sreq_uid):
+	"""
+	Function : Given a Sequencing Request object ID from Syapse, gives the query needed to fetch all Barcodes associated on that Sequencing Request for any Atac-Seq libraries. For Library libraries, see
+						 getLibraryBarcodesOnSeqRequestQuery().	
+	Args     : sreq_uid - str. A Sequencing Request object ID from Syapse.
+	Returns  : str. 
+
+	Table Columns:
+	[0] - SReq-ID
+	[1] - AtacSeq library name
+	[3] - Barcode for the AtacSeq library
+	[2] - Entex Biosample name
+	"""
+	query = """
+		SELECT ?SequencingRequest_A.sys:uniqueId ?AtacSeq_B.sys:uniqueId ?AtacSeq_B.enc:barcode ?AtacSeq_B.enc:hasBiosampleENTex WHERE {
+			REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
+				sys:uniqueId """ + "'" + sreq_uid + "'" + """ .
+				enc:hasAtacSeq ?AtacSeq_B
+			}
+			PATTERN ?AtacSeq_B enc:AtacSeq {
+				EXISTS enc:barcode 
+			}
+		}
+	LIMIT 20
+	"""
+	return query
+
+def getLibraryBarcodesOnSeqRequestQuery(sreq_uid):
 	"""
 	Function : Given a Sequencing Request object ID from Syapse, gives the query needed to fetch all Barcodes associated on that Sequencing Request.
-	Args     : seq_req_uid - str. A Sequencing Request object ID from Syapse.
+	Args     : sreq_uid - str. A Sequencing Request object ID from Syapse.
 	Returns  : str. The Syapse SyQL query.
 
 	Table Columns:
@@ -492,7 +519,7 @@ def getBarcodesOnSeqRequestQuery(seq_req_uid):
 					?SequencingRequest_A.enc:sequencingPlatform WHERE {
 					    REQUIRE PATTERN ?SequencingRequest_A enc:SequencingRequest {
 					        enc:hasLibrary ?Library_B .
-					        sys:uniqueId """ + "'" + seq_req_uid + "'"  + """
+					        sys:uniqueId """ + "'" + sreq_uid + "'"  + """
 					    }
 					    PATTERN ?Library_B enc:Library {
 					        REVERSE enc:ScgpmDChIP ?ScgpmDChIP_D
